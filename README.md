@@ -1295,6 +1295,26 @@ validate(new Date(0)); // new Date(0)
 validate(new Date("fail")); // throws
 ```
 
+### Array transformations
+
+#### arrayOf
+
+Transforms an `array` of type A into an `array` of type B given a schema that transforms values from A to B.
+This combinator is especially useful in conjunction with other combinators.
+
+```ts
+import * as S from "@effect/schema/Schema";
+
+// const schema: S.Schema<string, ReadonlyArray<number>>
+const schema = S.string.pipe(S.split(","), S.arrayOf(S.NumberFromString));
+const parse = S.parseSync(schema);
+
+parse("1,2"); // [1, 2]
+
+parse(""); // throws
+parse("a, b"); // throws
+```
+
 ## Interop with `@effect/data/Data`
 
 The `@effect/data/Data` module in the Effect ecosystem serves as a utility module that simplifies the process of comparing values for equality without the need for explicit implementations of the `Equal` and `Hash` interfaces. It provides convenient APIs that automatically generate default implementations for equality checks, making it easier for developers to perform equality comparisons in their applications.

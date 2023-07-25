@@ -2354,6 +2354,23 @@ export const itemsCount = <A>(
       })
     )
 
+/**
+ * This combinator transforms an `array` of type A into an `array` of type B given a schema that transforms values from A to B.
+ *
+ * @param self - The schema representing the input array
+ * @param of - The schema representing the transformation from A to B
+ * @category array
+ * @since 1.0.0
+ */
+export const arrayOf = <A, B>(of: Schema<A, B>) =>
+  <I>(self: Schema<I, ReadonlyArray<A>>): Schema<I, ReadonlyArray<B>> =>
+    transform(
+      self,
+      array(of),
+      identity,
+      identity
+    )
+
 // ---------------------------------------------
 // data/ReadonlyMap
 // ---------------------------------------------

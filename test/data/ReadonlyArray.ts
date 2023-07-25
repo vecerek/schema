@@ -48,4 +48,22 @@ describe.concurrent("ReadonlyArray", () => {
       "Expected an array of exactly 2 items, actual [1,2,3]"
     )
   })
+
+  it("arrayOf", async () => {
+    const schema = S.string.pipe(S.split(","), S.arrayOf(S.NumberFromString))
+
+    await Util.expectParseSuccess(schema, "1", [1])
+    await Util.expectParseSuccess(schema, "1,2", [1, 2])
+
+    await Util.expectParseFailure(
+      schema,
+      "",
+      "/0 Expected string -> number, actual \"\""
+    )
+    await Util.expectParseFailure(
+      schema,
+      "a,b,c",
+      "/0 Expected string -> number, actual \"a\""
+    )
+  })
 })
